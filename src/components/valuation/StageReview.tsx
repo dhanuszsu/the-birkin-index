@@ -175,11 +175,23 @@ export const StageReview: React.FC = () => {
             </div>
             <div>
               <span style={{ color: 'var(--color-espresso-light)', display: 'block', fontSize: '0.7rem' }}>Documentation</span>
-              <strong>{formData.documentation.length > 0 ? `${formData.documentation.length} item(s)` : 'None'}</strong>
+              <strong>
+                {formData.documentation.includes('none')
+                  ? 'No Paperwork'
+                  : formData.documentation.length > 0
+                  ? `${formData.documentation.length} document(s)`
+                  : 'None'}
+              </strong>
             </div>
             <div>
               <span style={{ color: 'var(--color-espresso-light)', display: 'block', fontSize: '0.7rem' }}>Accessories</span>
-              <strong>{formData.accessories.length > 0 ? `${formData.accessories.length} element(s)` : 'Bag only'}</strong>
+              <strong>
+                {formData.accessories.includes('none')
+                  ? 'Bag Only (No Inclusions)'
+                  : formData.accessories.length > 0
+                  ? `${formData.accessories.length} element(s)`
+                  : 'Bag only'}
+              </strong>
             </div>
           </div>
         </div>

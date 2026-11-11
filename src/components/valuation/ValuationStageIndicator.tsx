@@ -11,7 +11,8 @@ export const STAGES = [
 ];
 
 export const ValuationStageIndicator: React.FC = () => {
-  const { currentStage, completedStages, goToStage } = useValuation();
+  const { currentStage, completedStages, goToStage, hasVisitedReview, validateStage } = useValuation();
+  const canJumpReview = hasVisitedReview || completedStages.length >= 4;
 
   return (
     <div
@@ -141,8 +142,15 @@ export const ValuationStageIndicator: React.FC = () => {
 
         <button
           type="button"
-          onClick={() => completedStages.length >= 4 && goToStage(6)}
-          disabled={completedStages.length < 4}
+          onClick={() => {
+            if (canJumpReview) {
+              if (currentStage < 6 && !validateStage(currentStage)) {
+                return;
+              }
+              goToStage(6);
+            }
+          }}
+          disabled={!canJumpReview}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -150,8 +158,8 @@ export const ValuationStageIndicator: React.FC = () => {
             background: 'none',
             border: 'none',
             padding: '6px 8px',
-            cursor: completedStages.length >= 4 ? 'pointer' : 'default',
-            opacity: currentStage === 6 ? 1 : completedStages.length >= 4 ? 0.8 : 0.35,
+            cursor: canJumpReview ? 'pointer' : 'default',
+            opacity: currentStage === 6 ? 1 : canJumpReview ? 0.85 : 0.35,
             flexShrink: 0,
           }}
         >

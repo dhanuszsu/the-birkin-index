@@ -6,6 +6,39 @@ import { AlertCircle, Check } from 'lucide-react';
 export const Stage1BagIdentity: React.FC = () => {
   const { formData, updateField, errors } = useValuation();
 
+  // Hermès blind stamp historical decoding map
+  const STAMP_YEAR_MAP: Record<string, string> = {
+    W: '2024',
+    B: '2023',
+    U: '2022',
+    Z: '2021',
+    Y: '2020',
+    D: '2019',
+    C: '2018',
+    A: '2017',
+    X: '2016',
+    T: '2015',
+    R: '2014',
+    Q: '2013',
+    P: '2012',
+    O: '2011',
+    N: '2010',
+    M: '2009',
+    L: '2008',
+    K: '2007',
+    J: '2006',
+  };
+
+  const detectedStampLetter = formData.blindStamp?.trim().toUpperCase().slice(0, 1) || '';
+  const suggestedYear = detectedStampLetter ? STAMP_YEAR_MAP[detectedStampLetter] : null;
+
+  const handleModelSelect = (modelVal: string) => {
+    updateField('model', modelVal as any);
+    if (modelVal === 'Birkin Faubourg') {
+      updateField('size', 'Other / Special');
+    }
+  };
+
   return (
     <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
       <div>
@@ -48,7 +81,7 @@ export const Stage1BagIdentity: React.FC = () => {
               <button
                 type="button"
                 key={item.value}
-                onClick={() => updateField('model', item.value)}
+                onClick={() => handleModelSelect(item.value)}
                 className={`interactive-card ${isSelected ? 'is-active' : ''}`}
                 style={{
                   textAlign: 'left',
@@ -94,7 +127,7 @@ export const Stage1BagIdentity: React.FC = () => {
           })}
         </div>
         {errors.model && (
-          <p style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <p className="error-alert" style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <AlertCircle size={13} />
             <span>{errors.model}</span>
           </p>
@@ -169,7 +202,7 @@ export const Stage1BagIdentity: React.FC = () => {
           })}
         </div>
         {errors.size && (
-          <p style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <p className="error-alert" style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <AlertCircle size={13} />
             <span>{errors.size}</span>
           </p>
@@ -221,7 +254,7 @@ export const Stage1BagIdentity: React.FC = () => {
             ))}
           </select>
           {errors.productionYear && (
-            <p style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <p className="error-alert" style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <AlertCircle size={13} />
               <span>{errors.productionYear}</span>
             </p>
@@ -257,6 +290,31 @@ export const Stage1BagIdentity: React.FC = () => {
               fontSize: '0.88rem',
             }}
           />
+          {suggestedYear && (
+            <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.72rem', color: 'var(--color-espresso-muted)' }}>
+                Stamp '{detectedStampLetter}' indicates <strong>{suggestedYear}</strong>.
+              </span>
+              {formData.productionYear !== suggestedYear && (
+                <button
+                  type="button"
+                  onClick={() => updateField('productionYear', suggestedYear)}
+                  style={{
+                    fontSize: '0.7rem',
+                    color: 'var(--color-burgundy)',
+                    fontWeight: 600,
+                    textDecoration: 'underline',
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Apply {suggestedYear}
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

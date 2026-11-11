@@ -15,6 +15,14 @@ export const Stage2MaterialAppearance: React.FC = () => {
     { name: 'Porosus Crocodile', desc: 'Top tier exotic • Distinct symmetrical pore' },
   ];
 
+  const allColors = BIRKIN_COLORS.flatMap((g) => g.items);
+  const selectedColorObj = allColors.find((c) => c.value === formData.color);
+  const isColorInQuickSwatches = BIRKIN_COLORS[0].items.some((c) => c.value === formData.color);
+
+  const isExoticLeather = ['Porosus Crocodile', 'Niloticus Crocodile', 'Alligator', 'Lizard', 'Ostrich'].some(
+    (ex) => formData.leather?.includes(ex) || formData.leather === ex
+  );
+
   return (
     <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
       <div>
@@ -48,7 +56,7 @@ export const Stage2MaterialAppearance: React.FC = () => {
         {/* Quick-Select Cards for Top Leathers */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: '10px', marginBottom: '12px' }}>
           {primaryLeathers.map((item) => {
-            const isSelected = formData.leather === item.name;
+            const isSelected = formData.leather === item.name || (formData.leather ? formData.leather.includes(item.name) : false);
             return (
               <button
                 type="button"
@@ -120,8 +128,30 @@ export const Stage2MaterialAppearance: React.FC = () => {
           ))}
         </select>
 
+        {isExoticLeather && (
+          <div
+            style={{
+              marginTop: '10px',
+              padding: '10px 14px',
+              backgroundColor: 'var(--color-burgundy-subtle)',
+              border: '1px solid rgba(112, 43, 67, 0.15)',
+              borderRadius: 'var(--radius-xs)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}
+          >
+            <span style={{ fontSize: '0.75rem', color: 'var(--color-burgundy)', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+              Exotic Skin Classification:
+            </span>
+            <span style={{ fontSize: '0.78rem', color: 'var(--color-espresso)' }}>
+              CITES export permit verification will be highlighted in Stage 04 for international auction validity.
+            </span>
+          </div>
+        )}
+
         {errors.leather && (
-          <p style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <p className="error-alert" style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <AlertCircle size={13} />
             <span>{errors.leather}</span>
           </p>
@@ -227,8 +257,36 @@ export const Stage2MaterialAppearance: React.FC = () => {
           ))}
         </select>
 
+        {formData.color && !isColorInQuickSwatches && (
+          <div
+            style={{
+              marginTop: '10px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 12px',
+              backgroundColor: 'var(--color-ivory-light)',
+              border: '1px solid var(--color-stone)',
+              borderRadius: 'var(--radius-xs)',
+            }}
+          >
+            <div
+              style={{
+                width: '16px',
+                height: '16px',
+                borderRadius: '50%',
+                backgroundColor: selectedColorObj?.hex || '#877B70',
+                border: '1px solid rgba(48, 42, 35, 0.2)',
+              }}
+            />
+            <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-espresso)' }}>
+              Active Archive Shade: {selectedColorObj?.label || formData.color}
+            </span>
+          </div>
+        )}
+
         {errors.color && (
-          <p style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <p className="error-alert" style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <AlertCircle size={13} />
             <span>{errors.color}</span>
           </p>
@@ -323,7 +381,7 @@ export const Stage2MaterialAppearance: React.FC = () => {
         </div>
 
         {errors.hardware && (
-          <p style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <p className="error-alert" style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <AlertCircle size={13} />
             <span>{errors.hardware}</span>
           </p>

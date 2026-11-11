@@ -97,7 +97,7 @@ export const Stage3Condition: React.FC = () => {
       </div>
 
       {errors.condition && (
-        <p style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <p className="error-alert" style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
           <AlertCircle size={13} />
           <span>{errors.condition}</span>
         </p>

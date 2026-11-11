@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useValuation } from '../../context/ValuationContext';
 import { useCompare } from '../../context/CompareContext';
-import { Layers } from 'lucide-react';
+import { Layers, ChevronDown, ChevronUp } from 'lucide-react';
 
 export const ValuationSummarySidebar: React.FC = () => {
   const { formData, currentStage } = useValuation();
   const { openCompare } = useCompare();
+  const [mobileExpanded, setMobileExpanded] = useState(false);
 
   const hasAnySpec = Boolean(
     formData.model || formData.size || formData.leather || formData.color || formData.hardware || formData.condition
@@ -46,6 +47,7 @@ export const ValuationSummarySidebar: React.FC = () => {
 
   return (
     <aside
+      className="atelier-summary-aside"
       style={{
         backgroundColor: 'var(--color-ivory-light)',
         borderRight: '1px solid var(--color-stone)',
@@ -56,20 +58,49 @@ export const ValuationSummarySidebar: React.FC = () => {
         boxSizing: 'border-box',
       }}
     >
-      {/* Brand atelier header */}
-      <div style={{ marginBottom: '20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-          <span className="eyebrow" style={{ color: 'var(--color-burgundy)', fontSize: '0.68rem', letterSpacing: '0.14em' }}>
-            ATELIER CONFIGURATOR
-          </span>
-          <span style={{ fontSize: '0.68rem', color: 'var(--color-espresso-light)', fontWeight: 600 }}>
-            STAGE {Math.min(currentStage, 5)} OF 5
-          </span>
-        </div>
-        <h3 className="font-display" style={{ fontSize: '1.4rem', fontWeight: 400, color: 'var(--color-espresso)' }}>
-          {formData.model ? formData.model : 'Birkin Configuration'}
-        </h3>
+      {/* Mobile Accordion Bar */}
+      <div className="atelier-mobile-bar" style={{ display: 'none' }}>
+        <button
+          type="button"
+          onClick={() => setMobileExpanded(!mobileExpanded)}
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '12px 16px',
+            backgroundColor: 'var(--color-ivory)',
+            border: '1px solid var(--color-stone)',
+            borderRadius: 'var(--radius-xs)',
+            fontSize: '0.82rem',
+            fontWeight: 600,
+            color: 'var(--color-espresso)',
+            cursor: 'pointer',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span className="eyebrow" style={{ color: 'var(--color-burgundy)', fontSize: '0.68rem' }}>Active Dossier:</span>
+            <span>{formData.model ? `${formData.model} ${formData.size ? `${formData.size}cm` : ''}` : 'Empty Configuration'}</span>
+          </div>
+          {mobileExpanded ? <ChevronUp size={16} color="var(--color-burgundy)" /> : <ChevronDown size={16} color="var(--color-burgundy)" />}
+        </button>
       </div>
+
+      <div className={`atelier-sidebar-content ${mobileExpanded ? 'mobile-visible' : ''}`} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+        {/* Brand atelier header */}
+        <div style={{ marginBottom: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+            <span className="eyebrow" style={{ color: 'var(--color-burgundy)', fontSize: '0.68rem', letterSpacing: '0.14em' }}>
+              ATELIER CONFIGURATOR
+            </span>
+            <span style={{ fontSize: '0.68rem', color: 'var(--color-espresso-light)', fontWeight: 600 }}>
+              STAGE {Math.min(currentStage, 5)} OF 5
+            </span>
+          </div>
+          <h3 className="font-display" style={{ fontSize: '1.4rem', fontWeight: 400, color: 'var(--color-espresso)' }}>
+            {formData.model ? formData.model : 'Birkin Configuration'}
+          </h3>
+        </div>
 
       {/* Dynamic Architectural Bag Visual */}
       <div
@@ -257,6 +288,25 @@ export const ValuationSummarySidebar: React.FC = () => {
           <span>Compare Specifications</span>
         </button>
       </div>
+      </div>
+
+      <style>{`
+        @media (max-width: 960px) {
+          .atelier-summary-aside {
+            padding: 16px 20px !important;
+          }
+          .atelier-mobile-bar {
+            display: block !important;
+          }
+          .atelier-sidebar-content {
+            display: none !important;
+          }
+          .atelier-sidebar-content.mobile-visible {
+            display: flex !important;
+            margin-top: 16px;
+          }
+        }
+      `}</style>
     </aside>
   );
 };

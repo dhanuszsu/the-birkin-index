@@ -244,7 +244,11 @@ export const ValuationResultPage: React.FC = () => {
                   Accoutrements
                 </span>
                 <span style={{ fontSize: '0.94rem', fontWeight: 600, color: 'var(--color-espresso)' }}>
-                  {formData.accessories.length > 0 ? `${formData.accessories.length} Included` : 'Bag Only'}
+                  {formData.accessories.includes('none')
+                    ? 'Bag Only'
+                    : formData.accessories.length > 0
+                    ? `${formData.accessories.length} Included`
+                    : 'Bag Only'}
                 </span>
               </div>
             </div>

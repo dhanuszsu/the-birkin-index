@@ -6,6 +6,18 @@ import { Check } from 'lucide-react';
 export const Stage5Accessories: React.FC = () => {
   const { formData, updateField, toggleArrayField } = useValuation();
 
+  const isBagOnly = formData.accessories.includes('none');
+  const allIds = ACCESSORIES_OPTIONS.map((a) => a.id);
+  const isFullSet = allIds.every((id) => formData.accessories.includes(id));
+
+  const handleSelectAll = () => {
+    updateField('accessories', allIds);
+  };
+
+  const handleSetBagOnly = () => {
+    toggleArrayField('accessories', 'none');
+  };
+
   return (
     <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
       <div>
@@ -22,24 +34,70 @@ export const Stage5Accessories: React.FC = () => {
 
       {/* Accessories Grid */}
       <div>
-        <label
+        <div
           style={{
-            display: 'block',
-            fontSize: '0.75rem',
-            fontWeight: 700,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            marginBottom: '10px',
-            color: 'var(--color-espresso)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '8px',
+            marginBottom: '12px',
           }}
         >
-          Preserved Accessories Checklist
-        </label>
+          <label
+            style={{
+              fontSize: '0.75rem',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--color-espresso)',
+            }}
+          >
+            Preserved Accessories Checklist
+          </label>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <button
+              type="button"
+              onClick={handleSelectAll}
+              style={{
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                padding: '5px 10px',
+                borderRadius: 'var(--radius-xs)',
+                border: `1px solid ${isFullSet ? 'var(--color-burgundy)' : 'var(--color-stone)'}`,
+                backgroundColor: isFullSet ? 'var(--color-burgundy-subtle)' : 'var(--color-ivory)',
+                color: isFullSet ? 'var(--color-burgundy)' : 'var(--color-espresso)',
+                cursor: 'pointer',
+              }}
+            >
+              {isFullSet ? '✓ Full Boutique Set' : 'Select Full Set (8)'}
+            </button>
+            <button
+              type="button"
+              onClick={handleSetBagOnly}
+              style={{
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                padding: '5px 10px',
+                borderRadius: 'var(--radius-xs)',
+                border: `1px solid ${isBagOnly ? 'var(--color-burgundy)' : 'var(--color-stone)'}`,
+                backgroundColor: isBagOnly ? 'var(--color-burgundy)' : 'var(--color-ivory)',
+                color: isBagOnly ? 'var(--color-ivory)' : 'var(--color-espresso)',
+                cursor: 'pointer',
+              }}
+            >
+              Bag Only (No Accessories)
+            </button>
+          </div>
+        </div>
+
         <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
             gap: '10px',
+            opacity: isBagOnly ? 0.55 : 1,
+            transition: 'opacity 200ms ease',
           }}
         >
           {ACCESSORIES_OPTIONS.map((item) => {
@@ -88,6 +146,22 @@ export const Stage5Accessories: React.FC = () => {
             );
           })}
         </div>
+
+        {isBagOnly && (
+          <div
+            style={{
+              marginTop: '12px',
+              padding: '10px 14px',
+              backgroundColor: 'var(--color-ivory-light)',
+              border: '1px solid var(--color-stone)',
+              borderRadius: 'var(--radius-xs)',
+              fontSize: '0.78rem',
+              color: 'var(--color-espresso)',
+            }}
+          >
+            <strong>Confirmed:</strong> Presented as <em>Bag Only</em> without clochette, lock & keys, or original boutique inclusions.
+          </div>
+        )}
       </div>
 
       {/* Additional Remarks */}

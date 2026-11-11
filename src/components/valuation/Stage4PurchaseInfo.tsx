@@ -6,7 +6,11 @@ import { AlertCircle, Check } from 'lucide-react';
 
 export const Stage4PurchaseInfo: React.FC = () => {
   const { formData, updateField, toggleArrayField, errors } = useValuation();
-  const { currency } = useCurrency();
+  const { currency, setCurrency } = useCurrency();
+
+  const isExoticLeather = ['Porosus Crocodile', 'Niloticus Crocodile', 'Alligator', 'Lizard'].some(
+    (ex) => formData.leather?.includes(ex) || formData.leather === ex
+  );
 
   return (
     <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
@@ -86,7 +90,11 @@ export const Stage4PurchaseInfo: React.FC = () => {
           <div style={{ display: 'flex' }}>
             <select
               value={formData.purchaseCurrency || currency}
-              onChange={(e) => updateField('purchaseCurrency', e.target.value as any)}
+              onChange={(e) => {
+                const nextCurr = e.target.value as any;
+                updateField('purchaseCurrency', nextCurr);
+                setCurrency(nextCurr);
+              }}
               style={{
                 width: '75px',
                 padding: '10px 6px',
@@ -118,13 +126,38 @@ export const Stage4PurchaseInfo: React.FC = () => {
             />
           </div>
           {errors.originalPurchasePrice && (
-            <p style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <p className="error-alert" style={{ color: 'var(--color-burgundy)', fontSize: '0.78rem', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <AlertCircle size={13} />
               <span>{errors.originalPurchasePrice}</span>
             </p>
           )}
         </div>
       </div>
+
+      {/* Exotic CITES Advisory */}
+      {isExoticLeather && (
+        <div
+          style={{
+            padding: '14px 16px',
+            backgroundColor: 'var(--color-burgundy-subtle)',
+            border: '1.5px solid var(--color-burgundy)',
+            borderRadius: 'var(--radius-xs)',
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '12px',
+          }}
+        >
+          <AlertCircle size={18} color="var(--color-burgundy)" style={{ flexShrink: 0, marginTop: '2px' }} />
+          <div>
+            <div style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--color-burgundy)', marginBottom: '2px' }}>
+              CITES Certification Strongly Advised for Exotic Skin
+            </div>
+            <p style={{ fontSize: '0.78rem', color: 'var(--color-espresso)', lineHeight: 1.4 }}>
+              Because this piece features <strong>{formData.leather}</strong>, valid CITES documentation is essential for cross-border transit and optimal secondary auction clearance.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Documentation Checklist */}
       <div>
@@ -144,6 +177,7 @@ export const Stage4PurchaseInfo: React.FC = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: '8px' }}>
           {DOCUMENTATION_OPTIONS.map((doc) => {
             const isChecked = formData.documentation.includes(doc.id);
+            const isCitesRecommended = doc.id === 'cites_cert' && isExoticLeather;
             return (
               <button
                 type="button"
@@ -154,7 +188,13 @@ export const Stage4PurchaseInfo: React.FC = () => {
                   textAlign: 'left',
                   padding: '12px 14px',
                   backgroundColor: isChecked ? 'var(--color-ivory-light)' : 'var(--color-ivory)',
-                  border: `1.5px solid ${isChecked ? 'var(--color-burgundy)' : 'var(--color-stone)'}`,
+                  border: `1.5px solid ${
+                    isChecked
+                      ? 'var(--color-burgundy)'
+                      : isCitesRecommended
+                      ? 'rgba(112, 43, 67, 0.45)'
+                      : 'var(--color-stone)'
+                  }`,
                   borderRadius: 'var(--radius-xs)',
                   display: 'flex',
                   alignItems: 'center',
@@ -179,9 +219,27 @@ export const Stage4PurchaseInfo: React.FC = () => {
                 >
                   {isChecked && <Check size={11} strokeWidth={3} />}
                 </div>
-                <div>
-                  <div style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--color-espresso)' }}>
-                    {doc.label}
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
+                    <span style={{ fontSize: '0.84rem', fontWeight: 600, color: 'var(--color-espresso)' }}>
+                      {doc.label}
+                    </span>
+                    {isCitesRecommended && (
+                      <span
+                        style={{
+                          fontSize: '0.6rem',
+                          fontWeight: 700,
+                          textTransform: 'uppercase',
+                          padding: '2px 5px',
+                          backgroundColor: 'var(--color-burgundy)',
+                          color: 'var(--color-ivory)',
+                          borderRadius: '2px',
+                          flexShrink: 0,
+                        }}
+                      >
+                        Exotic
+                      </span>
+                    )}
                   </div>
                 </div>
               </button>

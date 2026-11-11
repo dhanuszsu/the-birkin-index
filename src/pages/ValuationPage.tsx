@@ -8,10 +8,10 @@ import { Stage3Condition } from '../components/valuation/Stage3Condition';
 import { Stage4PurchaseInfo } from '../components/valuation/Stage4PurchaseInfo';
 import { Stage5Accessories } from '../components/valuation/Stage5Accessories';
 import { StageReview } from '../components/valuation/StageReview';
-import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, RotateCcw, Check } from 'lucide-react';
 
 export const ValuationPage: React.FC = () => {
-  const { currentStage, nextStage, prevStage, resetForm } = useValuation();
+  const { currentStage, nextStage, prevStage, resetForm, hasVisitedReview, goToStage, validateStage } = useValuation();
 
   const renderActiveStage = () => {
     switch (currentStage) {
@@ -128,6 +128,8 @@ export const ValuationPage: React.FC = () => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '12px',
                 marginTop: '44px',
                 paddingTop: '24px',
                 borderTop: '1px solid var(--color-stone)',
@@ -150,20 +152,46 @@ export const ValuationPage: React.FC = () => {
                 <span>Previous Stage</span>
               </button>
 
-              <button
-                type="button"
-                onClick={nextStage}
-                className="btn btn-wine"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '12px 32px',
-                }}
-              >
-                <span>{currentStage === 5 ? 'Proceed to Review' : 'Save & Continue'}</span>
-                <ArrowRight size={14} />
-              </button>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
+                {hasVisitedReview && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (validateStage(currentStage)) {
+                        goToStage(6);
+                      }
+                    }}
+                    className="btn btn-secondary"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '12px 20px',
+                      fontSize: '0.75rem',
+                      borderColor: 'var(--color-burgundy)',
+                      color: 'var(--color-burgundy)',
+                    }}
+                  >
+                    <Check size={13} strokeWidth={2.5} />
+                    <span>Return to Review</span>
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={nextStage}
+                  className="btn btn-wine"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '12px 32px',
+                  }}
+                >
+                  <span>{currentStage === 5 ? 'Proceed to Review' : 'Save & Continue'}</span>
+                  <ArrowRight size={14} />
+                </button>
+              </div>
             </div>
           )}
         </div>

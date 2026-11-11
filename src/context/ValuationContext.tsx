@@ -16,6 +16,7 @@ interface ValuationContextType {
   isEngineConnected: boolean;
   isSubmitted: boolean;
   setIsSubmitted: (submitted: boolean) => void;
+  hasVisitedReview: boolean;
 }
 
 const initialFormData: ValuationFormData = {
@@ -73,6 +74,14 @@ export const ValuationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [completedStages, setCompletedStages] = useState<number[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [hasVisitedReview, setHasVisitedReview] = useState<boolean>(() => {
+    try {
+      const saved = sessionStorage.getItem('birkin_valuation_visited_review');
+      return saved === 'true';
+    } catch {
+      return false;
+    }
+  });
 
   // Future engine connection status - clearly defined as false for initial phase
   const isEngineConnected = false;
@@ -88,6 +97,10 @@ export const ValuationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   useEffect(() => {
     try {
       sessionStorage.setItem(STAGE_KEY, currentStage.toString());
+      if (currentStage === 6) {
+        setHasVisitedReview(true);
+        sessionStorage.setItem('birkin_valuation_visited_review', 'true');
+      }
     } catch {
       // storage unavailable
     }
@@ -108,9 +121,17 @@ export const ValuationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const toggleArrayField = (field: 'documentation' | 'accessories', item: string) => {
     setFormData((prev) => {
       const currentList = prev[field] || [];
-      const exists = currentList.includes(item);
-      const updated = exists ? currentList.filter((i) => i !== item) : [...currentList, item];
-      return { ...prev, [field]: updated };
+      if (item === 'none') {
+        // 'none' is mutually exclusive: toggling it clears all other selections
+        const exists = currentList.includes('none');
+        return { ...prev, [field]: exists ? [] : ['none'] };
+      } else {
+        // Any regular item clears 'none'
+        const exists = currentList.includes(item);
+        const withoutNone = currentList.filter((i) => i !== 'none');
+        const updated = exists ? withoutNone.filter((i) => i !== item) : [...withoutNone, item];
+        return { ...prev, [field]: updated };
+      }
     });
   };
 
@@ -133,11 +154,21 @@ export const ValuationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         newErrors.originalPurchasePrice = 'Please enter a valid numeric value without symbols.';
       }
     } else if (stage === 5) {
-      // Accessories can be empty (e.g. bag only without accessories), but we validate if user confirms
+      // Accessories can be empty (e.g. bag only without accessories), but user can explicitly confirm
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+
+    if (Object.keys(newErrors).length > 0) {
+      setTimeout(() => {
+        const firstErrorEl = document.querySelector('.error-alert, [data-error="true"], select:invalid');
+        if (firstErrorEl) {
+          firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 50);
+      return false;
+    }
+    return true;
   };
 
   const nextStage = (): boolean => {
@@ -146,7 +177,11 @@ export const ValuationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setCompletedStages((prev) => [...prev, currentStage]);
       }
       if (currentStage < 6) {
-        setCurrentStage((prev) => prev + 1);
+        const next = currentStage + 1;
+        setCurrentStage(next);
+        if (next === 6) {
+          setHasVisitedReview(true);
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return true;
       }
@@ -162,7 +197,12 @@ export const ValuationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const goToStage = (targetStage: number) => {
-    if (targetStage < currentStage || completedStages.includes(targetStage - 1) || targetStage === 1) {
+    if (
+      targetStage < currentStage ||
+      completedStages.includes(targetStage - 1) ||
+      targetStage === 1 ||
+      (targetStage === 6 && (hasVisitedReview || completedStages.length >= 4))
+    ) {
       setCurrentStage(targetStage);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -174,8 +214,10 @@ export const ValuationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setCompletedStages([]);
     setErrors({});
     setIsSubmitted(false);
+    setHasVisitedReview(false);
     sessionStorage.removeItem(STORAGE_KEY);
     sessionStorage.removeItem(STAGE_KEY);
+    sessionStorage.removeItem('birkin_valuation_visited_review');
   };
 
   return (
@@ -195,6 +237,7 @@ export const ValuationProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         isEngineConnected,
         isSubmitted,
         setIsSubmitted,
+        hasVisitedReview,
       }}
     >
       {children}

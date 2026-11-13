@@ -2,7 +2,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useValuation } from '../context/ValuationContext';
 import { useCompare } from '../context/CompareContext';
-import { Download, ArrowLeft, ArrowUpRight, Clock, Layers } from 'lucide-react';
+import { Download, ArrowLeft, ArrowUpRight, Clock, Layers, Scale } from 'lucide-react';
+import { convertValuationToCompareItem, findClosestArchiveMatch } from '../utils/compareData';
 
 export const ValuationResultPage: React.FC = () => {
   const { formData, resetForm } = useValuation();
@@ -16,6 +17,16 @@ export const ValuationResultPage: React.FC = () => {
 
   const hasConfig = Boolean(formData.model || formData.size || formData.leather);
   const specTitle = `${formData.model || 'Birkin'} ${formData.size ? `${formData.size} cm` : ''} ${formData.leather || ''}`.trim();
+
+  const handleOpenCompare = () => {
+    const userItem = convertValuationToCompareItem(formData);
+    const benchmarkItem = findClosestArchiveMatch(formData);
+    openCompare(
+      specTitle ? `Valuation Dossier: ${specTitle}` : 'Valuation Dossier vs. Historical Benchmark',
+      userItem,
+      benchmarkItem
+    );
+  };
 
   return (
     <div className="animate-fade-in" style={{ padding: 'clamp(48px, 6vw, 80px) 0 clamp(64px, 8vw, 96px)', flex: 1, backgroundColor: 'var(--color-ivory)' }}>
@@ -255,6 +266,49 @@ export const ValuationResultPage: React.FC = () => {
           )}
         </div>
 
+        {/* Comparative Specification Benchmark Callout */}
+        <div
+          style={{
+            backgroundColor: 'var(--color-ivory-light)',
+            border: '1px solid var(--color-stone)',
+            padding: '20px 24px',
+            marginBottom: '36px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '16px',
+          }}
+        >
+          <div style={{ maxWidth: '520px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+              <Scale size={14} color="var(--color-burgundy)" />
+              <span className="eyebrow" style={{ color: 'var(--color-burgundy)', fontSize: '0.68rem' }}>
+                Comparative Specification Benchmark
+              </span>
+            </div>
+            <p style={{ fontSize: '0.84rem', color: 'var(--color-espresso-muted)', lineHeight: 1.5, margin: 0 }}>
+              Compare your recorded Birkin side-by-side with audited auction lots and secondary dealer references to evaluate scale, leather, hardware, and provenance differences.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleOpenCompare}
+            className="btn btn-secondary"
+            style={{
+              padding: '11px 18px',
+              fontSize: '0.74rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            <Layers size={13} />
+            <span>Launch Specification Comparison</span>
+          </button>
+        </div>
+
         {/* Short Editorial Statement */}
         <div
           style={{
@@ -284,7 +338,7 @@ export const ValuationResultPage: React.FC = () => {
           <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' }}>
             <button
               type="button"
-              onClick={() => openCompare(specTitle ? `Dossier: ${specTitle}` : 'Valuation Dossier')}
+              onClick={handleOpenCompare}
               className="btn btn-secondary"
               style={{ padding: '12px 20px', fontSize: '0.74rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >

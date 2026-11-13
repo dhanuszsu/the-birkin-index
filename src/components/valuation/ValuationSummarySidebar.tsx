@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useValuation } from '../../context/ValuationContext';
 import { useCompare } from '../../context/CompareContext';
 import { Layers, ChevronDown, ChevronUp } from 'lucide-react';
+import { convertValuationToCompareItem, findClosestArchiveMatch } from '../../utils/compareData';
 
 export const ValuationSummarySidebar: React.FC = () => {
   const { formData, currentStage } = useValuation();
@@ -275,7 +276,15 @@ export const ValuationSummarySidebar: React.FC = () => {
       <div style={{ marginTop: 'auto', paddingTop: '16px', borderTop: '1px solid var(--color-stone)' }}>
         <button
           type="button"
-          onClick={() => openCompare(formData.model ? `Comparing: ${formData.model} ${formData.size}` : 'Current Atelier Configuration')}
+          onClick={() => {
+            const userItem = convertValuationToCompareItem(formData);
+            const benchmarkItem = findClosestArchiveMatch(formData);
+            openCompare(
+              formData.model ? `Atelier Configuration: ${formData.model} ${formData.size}cm` : 'Atelier vs. Benchmark',
+              userItem,
+              benchmarkItem
+            );
+          }}
           className="btn btn-secondary"
           style={{
             width: '100%',

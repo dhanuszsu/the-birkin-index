@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useValuation } from '../context/ValuationContext';
 import { useCompare } from '../context/CompareContext';
 import { Download, ArrowLeft, ArrowUpRight, Clock, Layers, Scale } from 'lucide-react';
 import { convertValuationToCompareItem, findClosestArchiveMatch } from '../utils/compareData';
+import { fetchModelStatus, ModelStatus } from '../services/api';
 
 export const ValuationResultPage: React.FC = () => {
   const { formData, resetForm } = useValuation();
   const { openCompare } = useCompare();
   const navigate = useNavigate();
+  const [modelStatus, setModelStatus] = useState<ModelStatus | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchModelStatus().then((status) => {
+      if (isMounted) {
+        setModelStatus(status);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleNewValuation = () => {
     resetForm();
@@ -111,7 +125,7 @@ export const ValuationResultPage: React.FC = () => {
           </div>
 
           <span className="eyebrow" style={{ color: 'var(--color-burgundy)', display: 'block', marginBottom: '6px' }}>
-            Awaiting Prediction Engine Integration
+            Empirical Prediction Engine • {modelStatus?.status === 'active' ? 'Calibrated' : 'Offline / Uncalibrated'}
           </span>
 
           <h2
@@ -123,7 +137,7 @@ export const ValuationResultPage: React.FC = () => {
               marginBottom: '12px',
             }}
           >
-            Valuation Engine Initialization Pending
+            {modelStatus?.is_available ? 'Predictive Valuation Engine Ready' : 'Valuation Engine Calibration Pending'}
           </h2>
 
           <p
@@ -131,12 +145,48 @@ export const ValuationResultPage: React.FC = () => {
               fontSize: '0.92rem',
               lineHeight: 1.65,
               color: 'var(--color-espresso-muted)',
-              maxWidth: '540px',
-              margin: '0 auto 24px',
+              maxWidth: '560px',
+              margin: '0 auto 20px',
             }}
           >
-            Estimated resale prices and fair settlement ranges will activate once the verified machine learning prediction engine connects with calibrated secondary market auction transactions.
+            {modelStatus?.reason ||
+              'Estimated resale prices and fair settlement ranges will activate once the verified machine learning prediction engine connects with calibrated secondary market auction transactions.'}
           </p>
+
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: '10px',
+              marginBottom: '20px',
+            }}
+          >
+            <div
+              style={{
+                padding: '6px 14px',
+                backgroundColor: 'var(--color-ivory)',
+                border: '1px solid var(--color-stone)',
+                fontSize: '0.74rem',
+                color: 'var(--color-espresso)',
+                letterSpacing: '0.04em',
+              }}
+            >
+              Verified ML Training Records: <strong>{modelStatus?.eligible_for_ml_count ?? 0} / {modelStatus?.minimum_records_required ?? 50}</strong>
+            </div>
+            <div
+              style={{
+                padding: '6px 14px',
+                backgroundColor: 'var(--color-ivory)',
+                border: '1px solid var(--color-stone)',
+                fontSize: '0.74rem',
+                color: 'var(--color-burgundy)',
+                letterSpacing: '0.04em',
+              }}
+            >
+              Strict Integrity Guard: <strong>Illustrative display records quarantined</strong>
+            </div>
+          </div>
 
           <div
             style={{

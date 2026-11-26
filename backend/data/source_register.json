@@ -1,0 +1,119 @@
+[
+  {
+    "id": "sothebys-paris",
+    "name": "Sotheby's Paris",
+    "source_type": "auction_house",
+    "website_url": "https://www.sothebys.com",
+    "reliability_tier": "Tier 1 - Public Live Auction",
+    "jurisdiction": "France (EUR)",
+    "description": "Public auction clearance cataloguing and post-sale hammer settlement sheets."
+  },
+  {
+    "id": "christies-ny",
+    "name": "Christie's New York",
+    "source_type": "auction_house",
+    "website_url": "https://www.christies.com",
+    "reliability_tier": "Tier 1 - Public Live Auction",
+    "jurisdiction": "United States (USD)",
+    "description": "Public auction clearances and luxury handbag live/online auction cataloguing."
+  },
+  {
+    "id": "artcurial-monaco",
+    "name": "Artcurial Monaco",
+    "source_type": "auction_house",
+    "website_url": "https://www.artcurial.com",
+    "reliability_tier": "Tier 1 - Public Live Auction",
+    "jurisdiction": "Monaco (EUR)",
+    "description": "Monaco luxury live auction summer/winter session catalogues."
+  },
+  {
+    "id": "christies-london",
+    "name": "Christie's London",
+    "source_type": "auction_house",
+    "website_url": "https://www.christies.com",
+    "reliability_tier": "Tier 1 - Public Live Auction",
+    "jurisdiction": "United Kingdom (GBP)",
+    "description": "King Street luxury sales session auction gazettes."
+  },
+  {
+    "id": "sothebys-hk",
+    "name": "Sotheby's Hong Kong",
+    "source_type": "auction_house",
+    "website_url": "https://www.sothebys.com",
+    "reliability_tier": "Tier 1 - Public Live Auction",
+    "jurisdiction": "Hong Kong (HKD)",
+    "description": "Asian luxury secondary market clearance benchmarks."
+  },
+  {
+    "id": "phillips-ny",
+    "name": "Phillips New York",
+    "source_type": "auction_house",
+    "website_url": "https://www.phillips.com",
+    "reliability_tier": "Tier 1 - Public Live Auction",
+    "jurisdiction": "United States (USD)",
+    "description": "Phillips luxury auction department cataloguing."
+  },
+  {
+    "id": "bonhams-london",
+    "name": "Bonhams London",
+    "source_type": "auction_house",
+    "website_url": "https://www.bonhams.com",
+    "reliability_tier": "Tier 1 - Public Live Auction",
+    "jurisdiction": "United Kingdom (GBP)",
+    "description": "New Bond Street luxury handbag sales archives."
+  },
+  {
+    "id": "christies-paris",
+    "name": "Christie's Paris",
+    "source_type": "auction_house",
+    "website_url": "https://www.christies.com",
+    "reliability_tier": "Tier 1 - Public Live Auction",
+    "jurisdiction": "France (EUR)",
+    "description": "Avenue Matignon luxury auctions."
+  },
+  {
+    "id": "artcurial-paris",
+    "name": "Artcurial Paris",
+    "source_type": "auction_house",
+    "website_url": "https://www.artcurial.com",
+    "reliability_tier": "Tier 1 - Public Live Auction",
+    "jurisdiction": "France (EUR)",
+    "description": "Rond-Point des Champs-Élysées luxury auctions."
+  },
+  {
+    "id": "collector-square",
+    "name": "Collector Square Paris",
+    "source_type": "specialist_dealer",
+    "website_url": "https://www.collectorsquare.com",
+    "reliability_tier": "Tier 2 - Established Resale Specialist",
+    "jurisdiction": "France (EUR)",
+    "description": "Fixed asking rates with dealer retail margins included."
+  },
+  {
+    "id": "heritage-auctions",
+    "name": "Heritage Auctions Buy Now",
+    "source_type": "specialist_dealer",
+    "website_url": "https://www.ha.com",
+    "reliability_tier": "Tier 2 - Established Resale Specialist",
+    "jurisdiction": "United States (USD)",
+    "description": "Fixed secondary asking rates from Heritage retail division."
+  },
+  {
+    "id": "luxury-specialist",
+    "name": "Luxury Specialist Consignment",
+    "source_type": "specialist_dealer",
+    "website_url": null,
+    "reliability_tier": "Tier 3 - Secondary Consignment",
+    "jurisdiction": "International",
+    "description": "Secondary dealer listings and unverified consignment quotes."
+  },
+  {
+    "id": "private-salon",
+    "name": "Private Specialist Salon",
+    "source_type": "specialist_dealer",
+    "website_url": null,
+    "reliability_tier": "Tier 3 - Secondary Consignment",
+    "jurisdiction": "International",
+    "description": "Private secondary salon quotes."
+  }
+]

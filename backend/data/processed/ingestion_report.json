@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-11-26T07:01:16.273124",
+  "total_input_records": 16,
+  "valid_records": 15,
+  "invalid_records": 0,
+  "duplicates_detected": 1,
+  "completed_sales_count": 9,
+  "dealer_asks_count": 5,
+  "auction_estimates_count": 1,
+  "ml_eligible_count": 0,
+  "quarantined_illustrative_count": 15,
+  "errors": [
+    {
+      "index": 4,
+      "id": "REC-SOTH-2024-142",
+      "warning": "Duplicate transaction detected; skipped"
+    }
+  ]
+}

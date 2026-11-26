@@ -1,0 +1,12 @@
+{
+  "is_available": false,
+  "status": "unavailable",
+  "model_type": "none",
+  "model_version": "0.0.0",
+  "trained_at": null,
+  "sample_size": 0,
+  "minimum_required": 50,
+  "metrics": {},
+  "refusal_reason": "Insufficient verified ML-eligible records (0 found, minimum 50 required). Illustrative records, dealer asking prices, and auction estimates are strictly quarantined from training. Predictive model generation halted to maintain statistical and econometric integrity.",
+  "last_evaluated": "2026-11-26T07:04:38.160706"
+}

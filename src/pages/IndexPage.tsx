@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useCompare } from '../context/CompareContext';
 import { useCurrency } from '../context/CurrencyContext';
 import { useValuation } from '../context/ValuationContext';
 import { ARCHIVE_RECORDS } from '../data/archiveRecords';
 import { ArchiveRecord } from '../types/archive';
+import { fetchArchiveRecords } from '../services/api';
 import {
   convertArchiveRecordToCompareItem,
   convertValuationToCompareItem,
@@ -38,6 +39,19 @@ export const IndexPage: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState('all');
   const [sortBy, setSortBy] = useState<'date_desc' | 'date_asc' | 'price_desc' | 'price_asc'>('date_desc');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [records, setRecords] = useState<ArchiveRecord[]>(ARCHIVE_RECORDS);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchArchiveRecords().then((res) => {
+      if (isMounted && res.items && res.items.length > 0) {
+        setRecords(res.items);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Filter option lists
   const sizeOptions = ['all', '25', '30', '35', '40'];
@@ -231,7 +245,7 @@ export const IndexPage: React.FC = () => {
 
   // Filter & Sort Logic
   const filteredRecords = useMemo(() => {
-    return ARCHIVE_RECORDS.filter((rec) => {
+    return records.filter((rec) => {
       // Transaction type filter
       if (transactionType !== 'all' && rec.transactionType !== transactionType) {
         return false;
@@ -316,6 +330,7 @@ export const IndexPage: React.FC = () => {
       return 0;
     });
   }, [
+    records,
     transactionType,
     selectedSize,
     selectedLeather,

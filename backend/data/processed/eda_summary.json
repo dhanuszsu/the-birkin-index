@@ -1,0 +1,297 @@
+{
+  "dataset_metadata": {
+    "total_records": 15,
+    "columns": [
+      "id",
+      "model",
+      "size",
+      "leather",
+      "color",
+      "hardware",
+      "condition",
+      "production_year",
+      "transaction_type",
+      "price_in_inr",
+      "original_price",
+      "original_currency",
+      "transaction_date",
+      "source_id",
+      "source_name",
+      "source_reference",
+      "source_url",
+      "price_basis",
+      "verification_status",
+      "verification_notes",
+      "eligible_for_ml",
+      "is_illustrative",
+      "record_category",
+      "notes",
+      "price_in_usd",
+      "ml_exclusion_reason"
+    ],
+    "illustrative_count": 15,
+    "ml_eligible_count": 0
+  },
+  "source_counts": {
+    "Sotheby's Paris": 2,
+    "Collector Square Paris": 2,
+    "Christie's New York": 1,
+    "Artcurial Monaco": 1,
+    "Christie's London": 1,
+    "Sotheby's Hong Kong": 1,
+    "Phillips New York": 1,
+    "Bonhams London": 1,
+    "Christie's Paris": 1,
+    "Artcurial Paris": 1,
+    "Heritage Auctions Buy Now": 1,
+    "Luxury Specialist Consignment": 1,
+    "Private Specialist Salon": 1
+  },
+  "transaction_type_distribution": {
+    "completed_sale": 9,
+    "asking_price": 5,
+    "auction_estimate": 1
+  },
+  "missing_value_analysis": {
+    "id": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "model": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "size": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "leather": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "color": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "hardware": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "condition": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "production_year": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "transaction_type": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "price_in_inr": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "original_price": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "original_currency": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "transaction_date": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "source_id": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "source_name": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "source_reference": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "source_url": {
+      "missing_count": 15,
+      "missing_pct": 100.0
+    },
+    "price_basis": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "verification_status": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "verification_notes": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "eligible_for_ml": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "is_illustrative": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "record_category": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "notes": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "price_in_usd": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    },
+    "ml_exclusion_reason": {
+      "missing_count": 0,
+      "missing_pct": 0.0
+    }
+  },
+  "price_distributions": {
+    "price_in_usd": {
+      "count": 15,
+      "min": 15660.0,
+      "max": 185000.0,
+      "mean": 36331.07,
+      "median": 26136.0,
+      "std": 41654.4,
+      "q25": 21780.0,
+      "q75": 30870.0
+    },
+    "price_in_inr": {
+      "count": 15,
+      "min": 1305000.0,
+      "max": 15447500.0,
+      "mean": 3031181.67,
+      "median": 2178000.0,
+      "std": 3478597.57,
+      "q25": 1816650.0,
+      "q75": 2575125.0
+    },
+    "original_price": {
+      "count": 15,
+      "min": 14500.0,
+      "max": 185000.0,
+      "mean": 35236.67,
+      "median": 26000.0,
+      "std": 41870.67,
+      "q25": 20900.0,
+      "q75": 30000.0
+    }
+  },
+  "price_by_size": {
+    "25": {
+      "count": 7.0,
+      "mean": 30508.57,
+      "median": 30240.0,
+      "min": 24300.0,
+      "max": 37260.0
+    },
+    "30": {
+      "count": 5.0,
+      "mean": 56039.2,
+      "median": 26136.0,
+      "min": 16800.0,
+      "max": 185000.0
+    },
+    "35": {
+      "count": 2.0,
+      "mean": 17775.0,
+      "median": 17775.0,
+      "min": 15750.0,
+      "max": 19800.0
+    },
+    "40": {
+      "count": 1.0,
+      "mean": 15660.0,
+      "median": 15660.0,
+      "min": 15660.0,
+      "max": 15660.0
+    }
+  },
+  "price_by_leather": {
+    "Box Calf": {
+      "count": 1.0,
+      "mean": 15660.0,
+      "median": 15660.0,
+      "min": 15660.0,
+      "max": 15660.0
+    },
+    "Clemence": {
+      "count": 1.0,
+      "mean": 16800.0,
+      "median": 16800.0,
+      "min": 16800.0,
+      "max": 16800.0
+    },
+    "Epsom": {
+      "count": 3.0,
+      "mean": 31632.0,
+      "median": 31500.0,
+      "min": 26136.0,
+      "max": 37260.0
+    },
+    "Niloticus Crocodile": {
+      "count": 1.0,
+      "mean": 185000.0,
+      "median": 185000.0,
+      "min": 185000.0,
+      "max": 185000.0
+    },
+    "Swift": {
+      "count": 1.0,
+      "mean": 30240.0,
+      "median": 30240.0,
+      "min": 30240.0,
+      "max": 30240.0
+    },
+    "Togo": {
+      "count": 8.0,
+      "mean": 25296.25,
+      "median": 25150.0,
+      "min": 15750.0,
+      "max": 34560.0
+    }
+  },
+  "currency_distribution": {
+    "EUR": 8,
+    "USD": 7
+  },
+  "condition_distribution": {
+    "Store Fresh / Pristine": 8,
+    "Very Good": 4,
+    "Excellent": 3
+  },
+  "correlation_analysis": {
+    "matrix": {
+      "size_num": {
+        "size_num": 1.0,
+        "condition_num": -0.7901,
+        "price_usd": -0.0687
+      },
+      "condition_num": {
+        "size_num": -0.7901,
+        "condition_num": 1.0,
+        "price_usd": 0.3597
+      },
+      "price_usd": {
+        "size_num": -0.0687,
+        "condition_num": 0.3597,
+        "price_usd": 1.0
+      }
+    },
+    "sample_size": 15,
+    "statistical_rigor_caveat": "OBSERVATION NOTICE: Sample size (n=15) is below empirical econometric threshold (n >= 50). Correlations reported above represent exploratory observations only and must NOT be interpreted as statistically conclusive hedonic price elasticities."
+  }
+}

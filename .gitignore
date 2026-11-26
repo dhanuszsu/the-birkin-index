@@ -31,3 +31,24 @@ dist-ssr
 *.pem
 *.key
 credentials.json
+
+# Python & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.venv
+venv/
+ENV/
+env/
+
+# Databases & local stores
+*.db
+*.sqlite
+*.sqlite3
+
+# Serialized model binary artifacts
+*.joblib
+*.pkl
